@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: ticket-assistant
+  datasource:
+    url: ${DATABASE_URL:jdbc:h2:mem:tickets;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL}
+    username: ${DATABASE_USER:sa}
+    password: ${DATABASE_PASSWORD:}
+    driver-class-name: ${DATABASE_DRIVER:org.h2.Driver}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+server:
+  port: ${PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+app:
+  ai:
+    provider: ${AI_PROVIDER:stub} # stub | openai
+    model-id: ${AI_MODEL:stub-1.0}
+    prompt-version: ${AI_PROMPT_VERSION:v1}
+    timeout-ms: 30000
+    max-retries: 2
+    rate-limit-per-minute: 5
+    stub-failure-rate: 0.0
+    openai-api-key: ${OPENAI_API_KEY:}
+    openai-base-url: ${OPENAI_BASE_URL:https://api.openai.com/v1}
+    openai-model: ${OPENAI_MODEL:gpt-4o-mini}
+    openai-embedding-model: ${OPENAI_EMBEDDING_MODEL:text-embedding-3-small}
+  seed:
+    enabled: ${APP_SEED:true}
+
+logging:
+  level:
+    com.example.tickets: INFO
